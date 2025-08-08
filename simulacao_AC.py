@@ -88,7 +88,7 @@ class AutomatoCelular:
             return img, leg_geracao
         
         # Altere a variavel interval para controlar a velocidade da animação
-        animacao = FuncAnimation(fig, atualizar_plot, frames=GERACOES, interval=200, blit=False, repeat=False)
+        animacao = FuncAnimation(fig, atualizar_plot, frames=GERACOES, interval=500, blit=False, repeat=False)
         plt.tight_layout()
         plt.show()
 
