@@ -12,7 +12,7 @@ PROB_REG_NATURAL = 0.005  # Probabilidade de solo se regenerar por geração (0.
 PROB_REG_FATOR_HUMANA = 0.3  # Probabilidade adicional de regeneração por intervenção humana (0%)
 FATOR_AUMENTO_ADJACENTE = 0.1  # Fator de aumento da probabilidade de regeneração por vizinho fértil
 
-# 0: Solo Fértil (marrom), 1: Agricultor (verde), 2: Solo Degradado (bege)
+
 cores = ['#8B4513', '#228B22', '#D2B48C']
 mapa_cores = mcolors.ListedColormap(cores)
 limites = [0, 1, 2, 3]
@@ -80,9 +80,10 @@ class AutomatoCelular:
 
         # Cria a legenda
         patches = [plt.Rectangle((0, 0), 1, 1, fc=c) for c in cores]
-        rotulos = ['Solo Fértil', 'Agricultor', 'Solo\nDegradado']
+        rotulos = ['Solo Fértil', 'Agricultor', 'Solo Degradado']
         
-        ax.legend(patches, rotulos, loc='upper left', bbox_to_anchor=(1.02, 0.95), borderaxespad=0)
+        legend_obj = ax.legend(patches, rotulos, loc='upper left', bbox_to_anchor=(1.02, 0.95), borderaxespad=0)
+        legend_texts = legend_obj.get_texts()
 
         leg_geracao = ax.text(1.02, 0.95, '', transform=ax.transAxes, fontsize=10, verticalalignment='bottom')
 
@@ -93,14 +94,23 @@ class AutomatoCelular:
         def atualizar_plot(geracao):
             self.atualizar()
             img.set_array(self.grade)
-            # Atualiza o texto da geracao atual
             leg_geracao.set_text(f'Geração: {geracao + 1}/{GERACOES}')
 
+            # Calcula as porcentagens
+            total_celulas = self.tamanho * self.tamanho
+            perc_fertil = (np.sum(self.grade == 0) / total_celulas) * 100
+            perc_agricultor = (np.sum(self.grade == 1) / total_celulas) * 100
+            perc_degradado = (np.sum(self.grade == 2) / total_celulas) * 100
+
+            legend_texts[0].set_text(f'Solo Fértil:\n{perc_fertil:.0f}%')
+            legend_texts[1].set_text(f'Agricultor:\n{perc_agricultor:.0f}%')
+            legend_texts[2].set_text(f'Solo\nDegradado:\n{perc_degradado:.0f}%')
+
+            # Exibe o gráfico assim que a última geração ocorre
             historico_fertil.append(np.count_nonzero(self.grade == 0))
             historico_agricultor.append(np.count_nonzero(self.grade == 1))
             historico_degradado.append(np.count_nonzero(self.grade == 2))
             
-            # Exibe o gráfico assim que a última geração ocorre
             if geracao + 1 == GERACOES:
                 plt.figure()
                 plt.plot(historico_fertil, label='Solo Fértil', color=cores[0])
@@ -113,7 +123,7 @@ class AutomatoCelular:
                 plt.tight_layout()
                 plt.show()
 
-            return img, leg_geracao
+            return img, leg_geracao, *legend_texts
       
         # Altere a variavel interval para controlar a velocidade da animação
         animacao = FuncAnimation(fig, atualizar_plot, frames=GERACOES, interval=200, blit=False, repeat=False)
