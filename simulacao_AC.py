@@ -8,7 +8,9 @@ from matplotlib.animation import FuncAnimation
 TAMANHO_GRADE = 50
 GERACOES = 100
 TEMPO_DEGRADACAO = 5  # Quantas gerações um agricultor fica no solo ate de degradá-lo
-PROBABILIDADE_REGENERACAO_SOLO = 0.001  # Probabilidade de solo se regenerar por geração (0.1%)
+PROB_REG_NATURAL = 0.005  # Probabilidade de solo se regenerar por geração (0.1%)
+PROB_REG_FATOR_HUMANA = 0.3  # Probabilidade adicional de regeneração por intervenção humana (0%)
+FATOR_AUMENTO_ADJACENTE = 0.1  # Fator de aumento da probabilidade de regeneração por vizinho fértil
 
 # 0: Solo Fértil (marrom), 1: Agricultor (verde), 2: Solo Degradado (bege)
 cores = ['#8B4513', '#228B22', '#D2B48C']
@@ -60,7 +62,11 @@ class AutomatoCelular:
                         self.idade_agrics[i, j] = 0
 
                 elif estado_atual == 2:  # Solo Degradado
-                    if random.random() < PROBABILIDADE_REGENERACAO_SOLO:
+                    vizinhos_ferteis = self.contar_vizinhos(i, j, 0)
+                    prob_regeneracao = PROB_REG_NATURAL * (1 + FATOR_AUMENTO_ADJACENTE * vizinhos_ferteis)
+                    prob_regeneracao += PROB_REG_FATOR_HUMANA  # Acrescenta a probabilidade adicional de regeneração por meio humano
+                    prob_regeneracao = min(prob_regeneracao, 1.0)  # Garante que a probabilidade não exceda 1.0
+                    if random.random() < prob_regeneracao:
                         nova_grade[i, j] = 0
 
         self.grade = nova_grade
