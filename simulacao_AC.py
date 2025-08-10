@@ -85,14 +85,36 @@ class AutomatoCelular:
         ax.legend(patches, rotulos, loc='upper left', bbox_to_anchor=(1.02, 0.95), borderaxespad=0)
 
         leg_geracao = ax.text(1.02, 0.95, '', transform=ax.transAxes, fontsize=10, verticalalignment='bottom')
+
+        historico_fertil = []
+        historico_agricultor = []
+        historico_degradado = []
         
         def atualizar_plot(geracao):
             self.atualizar()
             img.set_array(self.grade)
             # Atualiza o texto da geracao atual
             leg_geracao.set_text(f'Geração: {geracao + 1}/{GERACOES}')
+
+            historico_fertil.append(np.count_nonzero(self.grade == 0))
+            historico_agricultor.append(np.count_nonzero(self.grade == 1))
+            historico_degradado.append(np.count_nonzero(self.grade == 2))
+            
+            # Exibe o gráfico assim que a última geração ocorre
+            if geracao + 1 == GERACOES:
+                plt.figure()
+                plt.plot(historico_fertil, label='Solo Fértil', color=cores[0])
+                plt.plot(historico_agricultor, label='Agricultor', color=cores[1])
+                plt.plot(historico_degradado, label='Solo Degradado', color=cores[2])
+                plt.xlabel('Geração')
+                plt.ylabel('Quantidade de células')
+                plt.title('Evolução dos estados ao longo das gerações')
+                plt.legend()
+                plt.tight_layout()
+                plt.show()
+
             return img, leg_geracao
-        
+      
         # Altere a variavel interval para controlar a velocidade da animação
         animacao = FuncAnimation(fig, atualizar_plot, frames=GERACOES, interval=200, blit=False, repeat=False)
         plt.tight_layout()
