@@ -1,10 +1,10 @@
 
-#  Modelagem da Propagação de Assentamentos Agrícolas e Degradação do Solo Através de um Autômato Celular Discreto
+#  Modelagem da Propagação de Agricultores e Degradação do Solo baseado em Autômatos Celulares
 
 
 ##  Resumo
 
-Este projeto foi desenvolvido para a disciplina optativa de **Cellular Automata**. O objetivo é simular, através de um autômato celular (bidimensional de N×N células), como a atividade agrícola se expande e causa o desgaste do solo ao longo do tempo.
+Este projeto foi desenvolvido para a disciplina optativa de **Cellular Automata**. O objetivo é simular, através de um autômato celular (bidimensional de N×N células), a dinâmica entre agricultores, solo fértil, solo degradado e regeneração do solo ao longo do tempo.
 
 A simulação representa três estados de célula:
 
@@ -12,16 +12,25 @@ A simulação representa três estados de célula:
   * **Agricultor (Verde):** Área atualmente em cultivo.
   * **Solo Degradado (Bege):** Área que foi exaustivamente cultivada e se tornou infértil.
 
-## Configuração e Personalização
+Ao final da execução, o código:
 
-Você pode alterar os parâmetros da simulação diretamente no início do arquivo `simulacao_AC.py` para observar diferentes resultados.
+  * Mostra uma animação com a evolução espacial dos estados do solo.
+  * Exibe um gráfico temporal com a quantidade de células em cada estado ao longo das gerações.
 
-#### Parâmetros da Simulação
+## Parâmetros ajustáveis
 
-  * `TAMANHO_GRADE`: Altera o tamanho da grade da simulação (padrão: `50`).
-  * `GERACOES`: Define o número total de gerações que a simulação irá durar (padrão: `100`).
-  * `TEMPO_DEGRADACAO`: Controla quantas gerações um agricultor pode cultivar uma mesma célula antes que ela se degrade (padrão: `5`). Um valor menor acelera o desgaste.
-  * `PROBABILIDADE_REGENERACAO_SOLO`: A probabilidade (de 0 a 1) de um solo degradado se tornar fértil a cada geração (padrão: `0.001`, ou 0.1%).
+Os parâmetros abaixo podem ser alterados diretamente no início do código (`simulacao_AC.py`) para criar diferentes cenários:
+
+| Parâmetro | Descrição | Valor padrão | Exemplo de alteração |
+|-----------|-----------|--------------|----------------------|
+| `TAMANHO_GRADE` | Tamanho da grade (NxN) | `50` | `100` para simulação maior |
+| `GERACOES` | Número total de gerações simuladas | `100` | `200` para mais tempo de simulação |
+| `TEMPO_DEGRADACAO` | Gerações que um agricultor leva para degradar o solo | `5` | `10` para degradação mais lenta |
+| `PROB_REG_NATURAL` | Probabilidade de regeneração natural por geração | `0.005` | `0.01` para regeneração natural mais rápida |
+| `PROB_REG_FATOR_HUMANA` | Probabilidade extra de regeneração devido à intervenção humana | `0.3` (30%) | `0.0` para sem intervenção |
+| `FATOR_AUMENTO_ADJACENTE` | Aumento da chance de regeneração por vizinho fértil | `0.1` | `0.2` para efeito maior dos vizinhos |
+
+O modelo é probabilístico, então execuções diferentes podem gerar padrões diferentes.
 
 #### Parâmetros da Animação
 
@@ -30,12 +39,20 @@ Você pode alterar os parâmetros da simulação diretamente no início do arqui
 
 ## 📚 Bibliotecas Utilizadas
 
-O projeto depende das seguintes bibliotecas Python:
+O código utiliza as seguintes bibliotecas Python:
 
-  * **numpy:** Para manipulação eficiente de arrays e da grade da simulação.
-  * **matplotlib:** Para a criação dos gráficos e da animação.
+- [NumPy](https://numpy.org/) – Manipulação de matrizes e operações numéricas.
+- [Matplotlib](https://matplotlib.org/) – Visualização de dados e animação.
+- [random](https://docs.python.org/3/library/random.html) – Geração de números aleatórios.
 
-## 🚀 Instalação e Execução
+### Instalação das bibliotecas
+Você pode instalar todas as dependências executando:
+
+```bash
+    pip install numpy matplotlib
+```
+
+## ▶️ Execução
 
 1.  **Pré-requisitos:**
 

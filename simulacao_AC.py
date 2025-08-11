@@ -8,9 +8,9 @@ from matplotlib.animation import FuncAnimation
 TAMANHO_GRADE = 50
 GERACOES = 100
 TEMPO_DEGRADACAO = 5  # Quantas gerações um agricultor fica no solo ate de degradá-lo
-PROB_REG_NATURAL = 0.005  # Probabilidade de solo se regenerar por geração (0.1%)
-PROB_REG_FATOR_HUMANA = 0.3  # Probabilidade adicional de regeneração por intervenção humana (0%)
-FATOR_AUMENTO_ADJACENTE = 0.1  # Fator de aumento da probabilidade de regeneração por vizinho fértil
+PROB_REG_NATURAL = 0.005  # Probabilidade de solo se regenerar por geração (0.5%)
+PROB_REG_FATOR_HUMANA = 0.3  # Probabilidade adicional de regeneração por intervenção humana (30%)
+FATOR_AUMENTO_ADJACENTE = 0.1  # Fator de aumento da probabilidade de regeneração por vizinho fértil (10%)
 
 
 cores = ['#8B4513', '#228B22', '#D2B48C']
